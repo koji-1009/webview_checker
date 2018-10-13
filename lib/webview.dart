@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class WebView extends StatelessWidget {
   final String _url;
@@ -7,9 +8,10 @@ class WebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WebviewScaffold(
+      url: _url,
       appBar: AppBar(
-        title: Text("Web View"),
+        title: Text(_url),
       ),
     );
   }

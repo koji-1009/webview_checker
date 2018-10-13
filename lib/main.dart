@@ -44,12 +44,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _url = "";
+
   void _showWebView() {
     Navigator.push(
         context,
         MaterialPageRoute<Null>(
-            settings: const RouteSettings(name: "/detail"),
-            builder: (BuildContext context) => WebView("test")));
+            settings: const RouteSettings(name: "/webview"),
+            builder: (BuildContext context) => WebView(_url)));
   }
 
   @override
@@ -90,7 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
               TextFormField(
                 maxLines: 1,
                 keyboardType: TextInputType.url,
-                decoration: InputDecoration(labelText: 'Enter URL'),
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                    labelText: 'Enter URL', border: OutlineInputBorder()),
+                initialValue: _url,
+                onFieldSubmitted: (String newValue) {
+                  _url = newValue;
+                },
               ),
             ],
           ),
