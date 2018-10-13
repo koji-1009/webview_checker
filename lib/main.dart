@@ -45,13 +45,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _url = "";
+  bool _withJavascript = true;
+  bool _scrollBar = false;
 
   void _showWebView() {
-    Navigator.push(
-        context,
-        MaterialPageRoute<Null>(
-            settings: const RouteSettings(name: "/webview"),
-            builder: (BuildContext context) => WebView(_url)));
+    if (_url.isNotEmpty) {
+      Navigator.push(
+          context,
+          MaterialPageRoute<Null>(
+              settings: const RouteSettings(name: "/webview"),
+              builder: (BuildContext context) =>
+                  WebView(_url, _withJavascript, _scrollBar)));
+    } else {
+      // show error
+    }
   }
 
   @override
@@ -68,47 +75,47 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Container(
-          margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-          child: Column(
-            // Column is also layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug paint" (press "p" in the console where you ran
-            // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-            // window in IntelliJ) to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextFormField(
-                maxLines: 1,
-                keyboardType: TextInputType.url,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                    labelText: 'Enter URL', border: OutlineInputBorder()),
-                initialValue: _url,
-                onFieldSubmitted: (String newValue) {
-                  _url = newValue;
-                },
-              ),
-            ],
-          ),
+      body: SafeArea(
+        minimum: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextFormField(
+              maxLines: 1,
+              keyboardType: TextInputType.url,
+              textInputAction: TextInputAction.go,
+              decoration: InputDecoration(
+                  hintText: 'Enter the URL you want to check',
+                  labelText: 'URL',
+                  border: OutlineInputBorder()),
+              initialValue: _url,
+              onFieldSubmitted: (String value) {
+                setState(() {
+                  _url = value;
+                  _showWebView();
+                });
+              },
+            ),
+            CheckboxListTile(
+                title: const Text('JavaScript enable'),
+                value: _withJavascript,
+                onChanged: (bool value) {
+                  setState(() {
+                    _withJavascript = value;
+                  });
+                }),
+            CheckboxListTile(
+              title: const Text('Scrollbar enable'),
+              value: _scrollBar,
+              onChanged: (bool value) {
+                setState(() {
+                  _scrollBar = value;
+                });
+              },
+            ),
+          ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showWebView,
-        tooltip: 'Show WebView',
-        child: Icon(Icons.web),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
