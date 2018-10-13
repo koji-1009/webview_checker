@@ -44,6 +44,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+
   String _url = "";
   bool _withJavascript = true;
   bool _scrollBar = false;
@@ -57,7 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (BuildContext context) =>
                   WebView(_url, _withJavascript, _scrollBar)));
     } else {
-      // show error
+      _scaffoldState.currentState
+          .showSnackBar(SnackBar(content: Text("URL is empty")));
     }
   }
 
@@ -70,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      key: _scaffoldState,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
