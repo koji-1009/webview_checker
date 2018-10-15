@@ -80,25 +80,26 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: SafeArea(
-        minimum: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextFormField(
-              maxLines: 1,
-              keyboardType: TextInputType.url,
-              textInputAction: TextInputAction.go,
-              decoration: InputDecoration(
-                  hintText: 'Enter the URL you want to check',
-                  labelText: 'URL',
-                  border: OutlineInputBorder()),
-              initialValue: _url,
-              onFieldSubmitted: (String value) {
-                setState(() {
-                  _url = value;
-                  _showWebView();
-                });
-              },
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              child: TextFormField(
+                  maxLines: 1,
+                  keyboardType: TextInputType.url,
+                  textInputAction: TextInputAction.go,
+                  decoration: InputDecoration(
+                      hintText: 'Enter the URL you want to check',
+                      labelText: 'URL',
+                      border: OutlineInputBorder()),
+                  initialValue: _url,
+                  onFieldSubmitted: (String value) {
+                    setState(() {
+                      _url = value;
+                      _showWebView();
+                    });
+                  }),
             ),
             CheckboxListTile(
                 title: const Text('JavaScript enable'),
