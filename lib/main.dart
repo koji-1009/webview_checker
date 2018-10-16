@@ -37,7 +37,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -46,9 +46,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
-  String _url = "";
-  bool _withJavascript = true;
-  bool _scrollBar = false;
+  var _url = "";
+  var _withJavascript = true;
+  var _scrollBar = false;
 
   void _showWebView() {
     if (_url.isNotEmpty) {
