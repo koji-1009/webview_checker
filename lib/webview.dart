@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class WebView extends StatelessWidget {
-  final String _url;
-  final bool _withJavascript;
-  final bool _scrollBar;
+  final _url;
+  final _withJavascript;
+  final _scrollBar;
 
   WebView(this._url, this._withJavascript, this._scrollBar);
 
