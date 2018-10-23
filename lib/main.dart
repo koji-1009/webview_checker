@@ -48,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var _url = "";
   var _withJavascript = true;
+  var _clearCache = false;
+  var _clearCookies = false;
   var _withZoom = false;
   var _scrollBar = false;
 
@@ -57,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
           context,
           MaterialPageRoute<Null>(
               settings: const RouteSettings(name: "/webview"),
-              builder: (BuildContext context) =>
-                  WebView(_url, _withJavascript, _withZoom, _scrollBar)));
+              builder: (BuildContext context) => WebView(_url, _withJavascript,
+                  _withZoom, _scrollBar, _clearCache, _clearCookies)));
     } else {
       _scaffoldState.currentState
           .showSnackBar(SnackBar(content: Text("URL is empty")));
@@ -125,6 +127,24 @@ class _MyHomePageState extends State<MyHomePage> {
               onChanged: (bool value) {
                 setState(() {
                   _withZoom = value;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('Clear cache'),
+              value: _clearCache,
+              onChanged: (bool value) {
+                setState(() {
+                  _clearCache = value;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('Clear cookies'),
+              value: _clearCookies,
+              onChanged: (bool value) {
+                setState(() {
+                  _clearCookies = value;
                 });
               },
             ),
