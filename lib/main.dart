@@ -104,50 +104,56 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   }),
             ),
-            CheckboxListTile(
-                title: const Text('JavaScript enable'),
-                value: _withJavascript,
-                onChanged: (bool value) {
-                  setState(() {
-                    _withJavascript = value;
-                  });
-                }),
-            CheckboxListTile(
-              title: const Text('Scrollbar enable'),
-              value: _scrollBar,
-              onChanged: (bool value) {
-                setState(() {
-                  _scrollBar = value;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('With zoom button'),
-              value: _withZoom,
-              onChanged: (bool value) {
-                setState(() {
-                  _withZoom = value;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Clear cache'),
-              value: _clearCache,
-              onChanged: (bool value) {
-                setState(() {
-                  _clearCache = value;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Clear cookies'),
-              value: _clearCookies,
-              onChanged: (bool value) {
-                setState(() {
-                  _clearCookies = value;
-                });
-              },
-            ),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  CheckboxListTile(
+                      title: const Text('JavaScript enable'),
+                      value: _withJavascript,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _withJavascript = value;
+                        });
+                      }),
+                  CheckboxListTile(
+                    title: const Text('Scrollbar enable'),
+                    value: _scrollBar,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _scrollBar = value;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('With zoom button'),
+                    value: _withZoom,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _withZoom = value;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('Clear cache'),
+                    value: _clearCache,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _clearCache = value;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('Clear cookies'),
+                    value: _clearCookies,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _clearCookies = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
