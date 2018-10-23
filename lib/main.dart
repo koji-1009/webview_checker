@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var _url = "";
   var _withJavascript = true;
+  var _withZoom = false;
   var _scrollBar = false;
 
   void _showWebView() {
@@ -57,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute<Null>(
               settings: const RouteSettings(name: "/webview"),
               builder: (BuildContext context) =>
-                  WebView(_url, _withJavascript, _scrollBar)));
+                  WebView(_url, _withJavascript, _withZoom, _scrollBar)));
     } else {
       _scaffoldState.currentState
           .showSnackBar(SnackBar(content: Text("URL is empty")));
@@ -115,6 +116,15 @@ class _MyHomePageState extends State<MyHomePage> {
               onChanged: (bool value) {
                 setState(() {
                   _scrollBar = value;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('With zoom button'),
+              value: _withZoom,
+              onChanged: (bool value) {
+                setState(() {
+                  _withZoom = value;
                 });
               },
             ),
