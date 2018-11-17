@@ -2,6 +2,10 @@
 
 Android and iOS webview component testing application.
 
+## Privacy Policy
+
+[Privacy Policy](https://koji-1009.github.io/webview_checker/blob/master/privacy_policy.md)
+
 ## Licence
 
 ```text
