@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_checker/webview.dart';
 
 void main() => runApp(MyApp());
@@ -26,6 +27,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static const _URL_PRIVACY_POLICY =
+      'https://github.com/koji-1009/webview_checker/blob/master/privacy_policy.md';
+
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
   var _url = "";
@@ -49,13 +53,31 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldState,
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
+        PopupMenuButton<String>(
+          onSelected: _launchURL,
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem<String>(
+                value: _URL_PRIVACY_POLICY,
+                child: Text("Privacy Policy"),
+              )
+            ];
+          },
+        ),
+      ]),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
