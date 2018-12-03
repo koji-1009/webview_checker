@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_checker/webview.dart';
 
@@ -31,21 +32,32 @@ class _MyHomePageState extends State<MyHomePage> {
       'https://github.com/koji-1009/webview_checker/blob/master/privacy_policy.md';
 
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+  final _controller = TextEditingController();
 
-  var _url = "";
   var _withJavascript = true;
   var _clearCache = false;
   var _clearCookies = false;
   var _withZoom = false;
   var _scrollBar = false;
 
-  void _showWebView() {
-    if (_url.isNotEmpty) {
+  _getLastUrl() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("saved_url");
+  }
+
+  _saveLastUrl() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("saved_url", _controller.text);
+  }
+
+  _showWebView() {
+    final url = _controller.text;
+    if (url.isNotEmpty) {
       Navigator.push(
           context,
           MaterialPageRoute<Null>(
               settings: const RouteSettings(name: "/webview"),
-              builder: (BuildContext context) => WebView(_url, _withJavascript,
+              builder: (BuildContext context) => WebView(url, _withJavascript,
                   _withZoom, _scrollBar, _clearCache, _clearCookies)));
     } else {
       _scaffoldState.currentState
@@ -59,6 +71,14 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller.addListener(_saveLastUrl);
+    _getLastUrl().then((value) => _controller.text = value);
   }
 
   @override
@@ -84,21 +104,16 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.all(16.0),
-              child: TextFormField(
-                  maxLines: 1,
-                  keyboardType: TextInputType.url,
-                  textInputAction: TextInputAction.go,
-                  decoration: InputDecoration(
-                      hintText: 'Enter the URL you want to check',
-                      labelText: 'URL',
-                      border: OutlineInputBorder()),
-                  initialValue: _url,
-                  onFieldSubmitted: (String value) {
-                    setState(() {
-                      _url = value;
-                      _showWebView();
-                    });
-                  }),
+              child: TextField(
+                controller: _controller,
+                maxLines: 1,
+                keyboardType: TextInputType.url,
+                textInputAction: TextInputAction.go,
+                decoration: InputDecoration(
+                    hintText: 'Enter the URL you want to check',
+                    labelText: 'URL',
+                    border: OutlineInputBorder()),
+              ),
             ),
             Expanded(
               child: ListView(
@@ -152,6 +167,11 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showWebView,
+        tooltip: 'Open WebView',
+        child: Icon(Icons.open_in_browser),
       ),
     );
   }
