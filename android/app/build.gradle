@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId "com.app.dr1009.webviewchecker"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
