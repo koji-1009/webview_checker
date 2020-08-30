@@ -10,9 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WebView Checker',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: MyHomePage(title: 'WebView Checker'),
     );
   }
@@ -40,38 +39,49 @@ class _MyHomePageState extends State<MyHomePage> {
   var _withZoom = false;
   var _scrollBar = false;
 
-  _getLastUrl() async {
+  Future<String> _getLastUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString("saved_url");
+    return prefs.getString('saved_url');
   }
 
-  _saveLastUrl() async {
+  Future<void> _saveLastUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("saved_url", _controller.text);
+    await prefs.setString('saved_url', _controller.text);
   }
 
-  _showWebView() {
+  void _showWebView() {
     final url = _controller.text;
     if (url.isNotEmpty) {
-      Navigator.push(
-          context,
-          MaterialPageRoute<Null>(
-              settings: const RouteSettings(name: "/webview"),
-              builder: (BuildContext context) => WebView(url, _withJavascript,
-                  _withZoom, _scrollBar, _clearCache, _clearCookies)));
+      Navigator.of(context).push(_createRoute(url));
     } else {
-      _scaffoldState.currentState
-          .showSnackBar(SnackBar(content: Text("URL is empty")));
+      _scaffoldState.currentState.showSnackBar(
+        const SnackBar(
+          content: Text(
+            'URL is empty',
+          ),
+        ),
+      );
     }
   }
 
-  _launchURL(String url) async {
+  Future<void> _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
     }
   }
+
+  Route _createRoute(String url) => MaterialPageRoute(
+        builder: (BuildContext context) => WebView(
+          url,
+          _withJavascript,
+          _withZoom,
+          _scrollBar,
+          _clearCache,
+          _clearCookies,
+        ),
+      );
 
   @override
   void initState() {
@@ -85,19 +95,22 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldState,
-      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
-        PopupMenuButton<String>(
-          onSelected: _launchURL,
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem<String>(
-                value: _URL_PRIVACY_POLICY,
-                child: Text("Privacy Policy"),
-              )
-            ];
-          },
-        ),
-      ]),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: _launchURL,
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem<String>(
+                  value: _URL_PRIVACY_POLICY,
+                  child: Text('Privacy Policy'),
+                )
+              ];
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,9 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 keyboardType: TextInputType.url,
                 textInputAction: TextInputAction.go,
                 decoration: InputDecoration(
-                    hintText: 'Enter the URL you want to check',
-                    labelText: 'URL',
-                    border: OutlineInputBorder()),
+                  hintText: 'Enter the URL you want to check',
+                  labelText: 'URL',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
             Expanded(
@@ -121,15 +135,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   CheckboxListTile(
                       title: const Text('JavaScript enable'),
                       value: _withJavascript,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _withJavascript = value;
-                        });
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            _withJavascript = value;
+                          },
+                        );
                       }),
                   CheckboxListTile(
                     title: const Text('Scrollbar enable'),
                     value: _scrollBar,
-                    onChanged: (bool value) {
+                    onChanged: (value) {
                       setState(() {
                         _scrollBar = value;
                       });
@@ -138,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   CheckboxListTile(
                     title: const Text('With zoom button'),
                     value: _withZoom,
-                    onChanged: (bool value) {
+                    onChanged: (value) {
                       setState(() {
                         _withZoom = value;
                       });
@@ -147,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   CheckboxListTile(
                     title: const Text('Clear cache'),
                     value: _clearCache,
-                    onChanged: (bool value) {
+                    onChanged: (value) {
                       setState(() {
                         _clearCache = value;
                       });
@@ -156,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   CheckboxListTile(
                     title: const Text('Clear cookies'),
                     value: _clearCookies,
-                    onChanged: (bool value) {
+                    onChanged: (value) {
                       setState(() {
                         _clearCookies = value;
                       });
@@ -171,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _showWebView,
         tooltip: 'Open WebView',
-        child: Icon(Icons.open_in_browser),
+        child: const Icon(Icons.open_in_browser),
       ),
     );
   }
