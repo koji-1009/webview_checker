@@ -2,32 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class WebView extends StatelessWidget {
-  final _url;
-  final _withJavascript;
-  final _clearCache;
-  final _clearCookies;
-  final _withZoom;
-  final _scrollBar;
+  const WebView({
+    @required this.url,
+    @required this.withJavascript,
+    @required this.withZoom,
+    @required this.scrollBar,
+    @required this.clearCache,
+    @required this.clearCookies,
+  });
 
-  WebView(
-    this._url,
-    this._withJavascript,
-    this._withZoom,
-    this._scrollBar,
-    this._clearCache,
-    this._clearCookies,
-  );
+  final String url;
+  final bool withJavascript;
+  final bool clearCache;
+  final bool clearCookies;
+  final bool withZoom;
+  final bool scrollBar;
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
-        url: _url,
-        withJavascript: _withJavascript,
-        clearCache: _clearCache,
-        clearCookies: _clearCookies,
-        withZoom: _withZoom,
-        scrollBar: _scrollBar,
+        url: url,
+        withJavascript: withJavascript,
+        clearCache: clearCache,
+        clearCookies: clearCookies,
+        withZoom: withZoom,
+        scrollBar: scrollBar,
         appBar: AppBar(
-          title: Text(_url),
+          title: Text(url),
         ),
       );
 }
