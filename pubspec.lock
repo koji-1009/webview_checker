@@ -177,13 +177,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4+1"
-  pedantic:
+  pedantic_mono:
     dependency: "direct dev"
     description:
-      name: pedantic
+      name: pedantic_mono
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.2"
+    version: "1.10.0+2"
   petitparser:
     dependency: transitive
     description:
