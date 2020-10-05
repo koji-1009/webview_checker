@@ -28,7 +28,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static const _urlPrivacyPolicy =
-      'https://github.com/koji-1009/webview_checker/blob/master/privacy_policy.md';
+      'https://github.com/koji-1009/webview_checker/blob/main/privacy_policy.md';
 
   final _scaffoldState = GlobalKey<ScaffoldState>();
   final _controller = TextEditingController();
