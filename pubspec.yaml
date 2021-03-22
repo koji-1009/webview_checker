@@ -4,16 +4,15 @@ description: Android and iOS webview component testing application.
 version: 1.3.2+12
 
 environment:
-  sdk: 2.10.2
-  flutter: 1.22.2
+  sdk: ">=2.12.2<3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_webview_plugin: ^0.3.8
-  flutter_launcher_icons: ^0.8.1
-  url_launcher: ^5.7.7
-  shared_preferences: ^0.5.12+2
+  webview_flutter: ^2.0.2
+  shared_preferences: ^2.0.5
+  url_launcher: ^6.0.2
 
 flutter_icons:
   android: true
@@ -25,6 +24,7 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.0
   pedantic: any
   pedantic_mono: any
 
