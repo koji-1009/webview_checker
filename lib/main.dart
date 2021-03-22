@@ -3,9 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_checker/webview.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +20,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   final String title;
 
@@ -36,8 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
   var _withJavascript = true;
   var _clearCache = false;
   var _clearCookies = false;
-  var _withZoom = false;
-  var _scrollBar = false;
 
   @override
   void initState() {
@@ -96,47 +99,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         onChanged: (value) {
                           setState(
                             () {
-                              _withJavascript = value;
+                              _withJavascript = value ?? false;
                             },
                           );
                         });
                   case 1:
                     return CheckboxListTile(
-                      title: const Text('Scrollbar enable'),
-                      value: _scrollBar,
+                      title: const Text('Clear cache'),
+                      value: _clearCache,
                       onChanged: (value) {
                         setState(() {
-                          _scrollBar = value;
+                          _clearCache = value ?? false;
                         });
                       },
                     );
                   case 2:
                     return CheckboxListTile(
-                      title: const Text('With zoom button'),
-                      value: _withZoom,
-                      onChanged: (value) {
-                        setState(() {
-                          _withZoom = value;
-                        });
-                      },
-                    );
-                  case 4:
-                    return CheckboxListTile(
-                      title: const Text('Clear cache'),
-                      value: _clearCache,
-                      onChanged: (value) {
-                        setState(() {
-                          _clearCache = value;
-                        });
-                      },
-                    );
-                  case 5:
-                    return CheckboxListTile(
                       title: const Text('Clear cookies'),
                       value: _clearCookies,
                       onChanged: (value) {
                         setState(() {
-                          _clearCookies = value;
+                          _clearCookies = value ?? false;
                         });
                       },
                     );
@@ -158,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<String> _getLastUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('saved_url');
+    return prefs.getString('saved_url') ?? '';
   }
 
   Future<void> _saveLastUrl() async {
@@ -169,9 +152,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showWebView() {
     final url = _controller.text;
     if (url.isNotEmpty) {
-      Navigator.push<WebView>(context, _createRoute(url));
+      Navigator.push<WebPage>(context, _createRoute(url));
     } else {
-      _scaffoldState.currentState.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
             'URL is empty',
@@ -185,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      _scaffoldState.currentState.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'Could not launch $url',
@@ -195,12 +178,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Route<WebView> _createRoute(String url) => MaterialPageRoute<WebView>(
-        builder: (context) => WebView(
+  Route<WebPage> _createRoute(String url) => MaterialPageRoute<WebPage>(
+        builder: (context) => WebPage(
           url: url,
           withJavascript: _withJavascript,
-          withZoom: _withZoom,
-          scrollBar: _scrollBar,
           clearCache: _clearCache,
           clearCookies: _clearCookies,
         ),
