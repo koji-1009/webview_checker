@@ -4,12 +4,12 @@ Android and iOS webview component testing application.
 
 ## Privacy Policy
 
-[Privacy Policy](https://github.com/koji-1009/webview_checker/blob/master/privacy_policy.md)
+[Privacy Policy](https://github.com/koji-1009/webview_checker/blob/main/privacy_policy.md)
 
 ## Licence
 
 ```text
-Copyright 2018 Koji Wakamiya
+Copyright 2021 Koji Wakamiya
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
