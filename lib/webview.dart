@@ -25,7 +25,6 @@ class WebPage extends StatelessWidget {
         if (clearCache) {
           await controller.clearCache();
         }
-
       },
       initialUrl: url,
       javascriptMode: withJavascript
