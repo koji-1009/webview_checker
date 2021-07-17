@@ -3,11 +3,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebPage extends StatelessWidget {
   const WebPage({
+    Key? key,
     required this.url,
     required this.withJavascript,
     required this.clearCache,
     required this.clearCookies,
-  });
+  }) : super(key: key);
 
   final String url;
   final bool withJavascript;
@@ -17,7 +18,7 @@ class WebPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (clearCookies) {
-      CookieManager().clearCookies().then((value) => print('clear cookie'));
+      CookieManager().clearCookies().then((_) {});
     }
 
     final webView = WebView(
