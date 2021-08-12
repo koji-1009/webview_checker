@@ -98,7 +98,7 @@ packages:
     source: hosted
     version: "0.9.1"
   flutter_lints:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: flutter_lints
       url: "https://pub.dartlang.org"
@@ -177,13 +177,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  pedantic_mono:
-    dependency: "direct dev"
-    description:
-      name: pedantic_mono
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.13.0+3"
   petitparser:
     dependency: transitive
     description:
