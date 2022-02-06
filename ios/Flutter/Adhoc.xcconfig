@@ -1,4 +1,0 @@
-#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
-#include "Generated.xcconfig"
-
-PRODUCT_BUNDLE_IDENTIFIER=com.app.dr1009.webviewChecker.adhoc
