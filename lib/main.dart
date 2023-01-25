@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_checker/webview.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WebView Checker',
-      theme: ThemeData.from(colorScheme: const ColorScheme.light()),
-      darkTheme: ThemeData.from(colorScheme: const ColorScheme.dark()),
-      home: const MyHomePage(title: 'WebView Checker'),
+      theme: ThemeData.light(
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData.dark(
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(
+        title: 'WebView Checker',
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   static const _urlPrivacyPolicy =
       'https://github.com/koji-1009/webview_checker/blob/main/privacy_policy.md';
 
-  final _scaffoldState = GlobalKey<ScaffoldState>();
   final _controller = TextEditingController();
 
   var _withJavascript = true;
@@ -53,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
@@ -64,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const PopupMenuItem<String>(
                   value: _urlPrivacyPolicy,
                   child: Text('Privacy Policy'),
-                )
+                ),
               ];
             },
           ),
@@ -153,21 +157,25 @@ class _MyHomePageState extends State<MyHomePage> {
     final url = _controller.text;
     if (url.isNotEmpty) {
       Navigator.push<WebPage>(context, _createRoute(url));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'URL is empty',
-          ),
-        ),
-      );
+      return;
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'URL is empty',
+        ),
+      ),
+    );
   }
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+      return;
+    }
+
+    if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

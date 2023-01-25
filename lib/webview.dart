@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebPage extends StatelessWidget {
+class WebPage extends StatefulWidget {
   const WebPage({
-    Key? key,
+    super.key,
     required this.url,
     required this.withJavascript,
     required this.clearCache,
     required this.clearCookies,
-  }) : super(key: key);
+  });
 
   final String url;
   final bool withJavascript;
@@ -16,28 +16,46 @@ class WebPage extends StatelessWidget {
   final bool clearCookies;
 
   @override
+  State<WebPage> createState() => _WebPageState();
+}
+
+class _WebPageState extends State<WebPage> {
+  late WebViewController _controller;
+
+  @override
+  void initState() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(
+        widget.withJavascript
+            ? JavaScriptMode.unrestricted
+            : JavaScriptMode.disabled,
+      )
+      ..loadRequest(
+        Uri.parse(widget.url),
+      );
+
+    Future(() async {
+      if (widget.clearCookies) {
+        await WebViewCookieManager().clearCookies();
+      }
+
+      if (widget.clearCache) {
+        await _controller.clearCache();
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (clearCookies) {
-      CookieManager().clearCookies().then((_) {});
-    }
-
-    final webView = WebView(
-      onWebViewCreated: (controller) async {
-        if (clearCache) {
-          await controller.clearCache();
-        }
-      },
-      initialUrl: url,
-      javascriptMode: withJavascript
-          ? JavascriptMode.unrestricted
-          : JavascriptMode.disabled,
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter\'s appBar'),
       ),
-      body: webView,
+      body: WebViewWidget(
+        controller: _controller,
+      ),
     );
   }
 }
