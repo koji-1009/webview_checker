@@ -4,8 +4,8 @@ publish_to: none
 version: 2.5.0+18
 
 environment:
-  sdk: ">=2.19.0<3.0.0"
-  flutter: ">=3.7.0"
+  sdk: ">=3.0.0<4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -23,7 +23,7 @@ flutter_icons:
   adaptive_icon_foreground: "icon/icon-foreground.png"
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0

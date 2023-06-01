@@ -56,29 +56,33 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: <Widget>[
+        actions: [
           PopupMenuButton<String>(
             onSelected: _launchURL,
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem<String>(
-                  value: _urlPrivacyPolicy,
-                  child: Text('Privacy Policy'),
-                ),
-              ];
-            },
+            itemBuilder: (context) => const [
+              PopupMenuItem<String>(
+                value: _urlPrivacyPolicy,
+                child: Text('Privacy Policy'),
+              ),
+            ],
           ),
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.all(16),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
             child: TextField(
               controller: _controller,
               maxLines: 1,
@@ -94,45 +98,39 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: ListView.builder(
               itemCount: 6,
-              itemBuilder: (context, index) {
-                switch (index) {
-                  case 0:
-                    return CheckboxListTile(
-                        title: const Text('JavaScript enable'),
-                        value: _withJavascript,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              _withJavascript = value ?? false;
-                            },
-                          );
-                        });
-                  case 1:
-                    return CheckboxListTile(
-                      title: const Text('Clear cache'),
-                      value: _clearCache,
-                      onChanged: (value) {
-                        setState(() {
-                          _clearCache = value ?? false;
-                        });
-                      },
-                    );
-                  case 2:
-                    return CheckboxListTile(
-                      title: const Text('Clear cookies'),
-                      value: _clearCookies,
-                      onChanged: (value) {
-                        setState(() {
-                          _clearCookies = value ?? false;
-                        });
-                      },
-                    );
-                  default:
-                    return const SizedBox.shrink();
-                }
+              itemBuilder: (context, index) => switch (index) {
+                0 => CheckboxListTile(
+                    title: const Text('JavaScript enable'),
+                    value: _withJavascript,
+                    onChanged: (value) {
+                      setState(
+                        () {
+                          _withJavascript = value ?? false;
+                        },
+                      );
+                    }),
+                1 => CheckboxListTile(
+                    title: const Text('Clear cache'),
+                    value: _clearCache,
+                    onChanged: (value) {
+                      setState(() {
+                        _clearCache = value ?? false;
+                      });
+                    },
+                  ),
+                2 => CheckboxListTile(
+                    title: const Text('Clear cookies'),
+                    value: _clearCookies,
+                    onChanged: (value) {
+                      setState(() {
+                        _clearCookies = value ?? false;
+                      });
+                    },
+                  ),
+                _ => const SizedBox.shrink()
               },
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -155,18 +153,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _showWebView() {
     final url = _controller.text;
-    if (url.isNotEmpty) {
-      Navigator.push<WebPage>(context, _createRoute(url));
+    if (url.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'URL is empty',
+          ),
+        ),
+      );
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'URL is empty',
-        ),
-      ),
-    );
+    Navigator.push<WebPage>(context, _createRoute(url));
   }
 
   Future<void> _launchURL(String url) async {
