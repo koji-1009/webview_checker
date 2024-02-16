@@ -1,7 +1,7 @@
 name: webview_checker
 description: Android and iOS webview component testing application.
 publish_to: none
-version: 2.6.0+19
+version: 2.7.0+20
 
 environment:
   sdk: ">=3.3.0<4.0.0"
