@@ -24,6 +24,8 @@ class _WebPageState extends State<WebPage> {
 
   @override
   void initState() {
+    super.initState();
+
     _controller = WebViewController()
       ..setJavaScriptMode(
         widget.withJavascript
@@ -43,8 +45,6 @@ class _WebPageState extends State<WebPage> {
         await _controller.clearCache();
       }
     });
-
-    super.initState();
   }
 
   @override
