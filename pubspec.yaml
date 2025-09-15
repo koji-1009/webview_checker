@@ -4,8 +4,8 @@ publish_to: none
 version: 2.9.1+23
 
 environment:
-  sdk: ">=3.6.0<4.0.0"
-  flutter: ">=3.27.0"
+  sdk: ">=3.9.0<4.0.0"
+  flutter: ">=3.35.0"
 
 dependencies:
   flutter:
@@ -23,10 +23,10 @@ flutter_icons:
   adaptive_icon_foreground: "icon/icon-foreground.png"
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -38,3 +38,5 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  config:
+    enable-swift-package-manager: true

@@ -53,74 +53,80 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('WebView Checker'),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: _launchURL,
-            itemBuilder: (context) => const [
-              PopupMenuItem<String>(
-                value: _urlPrivacyPolicy,
-                child: Text('Privacy Policy'),
-              ),
-            ],
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: _controller,
-              maxLines: 1,
-              keyboardType: TextInputType.url,
-              textInputAction: TextInputAction.go,
-              decoration: const InputDecoration(
-                hintText: 'Enter the URL you want to check',
-                labelText: 'URL',
-                border: OutlineInputBorder(),
+      body: SafeArea(
+        bottom: false,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: const Text('WebView Checker'),
+              actions: [
+                PopupMenuButton<String>(
+                  onSelected: _launchURL,
+                  itemBuilder: (context) => const [
+                    PopupMenuItem<String>(
+                      value: _urlPrivacyPolicy,
+                      child: Text('Privacy Policy'),
+                    ),
+                  ],
+                ),
+              ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(72),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: TextField(
+                    controller: _controller,
+                    maxLines: 1,
+                    keyboardType: TextInputType.url,
+                    textInputAction: TextInputAction.go,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter the URL you want to check',
+                      labelText: 'URL',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 6,
-              itemBuilder: (context, index) => switch (index) {
-                0 => CheckboxListTile(
-                    title: const Text('JavaScript enable'),
-                    value: _withJavascript,
-                    onChanged: (value) {
-                      setState(
-                        () {
-                          _withJavascript = value ?? false;
-                        },
-                      );
-                    }),
-                1 => CheckboxListTile(
-                    title: const Text('Clear cache'),
-                    value: _clearCache,
-                    onChanged: (value) {
-                      setState(() {
-                        _clearCache = value ?? false;
-                      });
-                    },
-                  ),
-                2 => CheckboxListTile(
-                    title: const Text('Clear cookies'),
-                    value: _clearCookies,
-                    onChanged: (value) {
-                      setState(() {
-                        _clearCookies = value ?? false;
-                      });
-                    },
-                  ),
-                _ => const SizedBox.shrink()
-              },
+            SliverList.list(
+              children: [
+                CheckboxListTile(
+                  title: const Text('JavaScript enable'),
+                  value: _withJavascript,
+                  onChanged: (value) {
+                    setState(() {
+                      _withJavascript = value ?? false;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: const Text('Clear cache'),
+                  value: _clearCache,
+                  onChanged: (value) {
+                    setState(() {
+                      _clearCache = value ?? false;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: const Text('Clear cookies'),
+                  value: _clearCookies,
+                  onChanged: (value) {
+                    setState(() {
+                      _clearCookies = value ?? false;
+                    });
+                  },
+                ),
+              ],
             ),
-          ),
-        ],
+            SliverToBoxAdapter(
+              child: SizedBox(height: MediaQuery.paddingOf(context).bottom),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showWebView,
@@ -143,13 +149,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showWebView() {
     final url = _controller.text;
     if (url.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'URL is empty',
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('URL is empty')));
       return;
     }
 
@@ -163,22 +165,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Could not launch $url',
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not launch $url')));
     }
   }
 
   Route<WebPage> _createRoute(String url) => MaterialPageRoute<WebPage>(
-        builder: (context) => WebPage(
-          url: url,
-          withJavascript: _withJavascript,
-          clearCache: _clearCache,
-          clearCookies: _clearCookies,
-        ),
-      );
+    builder: (context) => WebPage(
+      url: url,
+      withJavascript: _withJavascript,
+      clearCache: _clearCache,
+      clearCookies: _clearCookies,
+    ),
+  );
 }
