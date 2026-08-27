@@ -11,7 +11,7 @@
     </queries>
 
     <application
-        android:label="WebView Checker"
+        android:label="webview_checker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
