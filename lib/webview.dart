@@ -32,9 +32,7 @@ class _WebPageState extends State<WebPage> {
             ? JavaScriptMode.unrestricted
             : JavaScriptMode.disabled,
       )
-      ..loadRequest(
-        Uri.parse(widget.url),
-      );
+      ..loadRequest(Uri.parse(widget.url));
 
     Future(() async {
       if (widget.clearCookies) {
@@ -50,12 +48,8 @@ class _WebPageState extends State<WebPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter\'s appBar'),
-      ),
-      body: WebViewWidget(
-        controller: _controller,
-      ),
+      appBar: AppBar(title: const Text('Flutter\'s appBar')),
+      body: WebViewWidget(controller: _controller),
     );
   }
 }
