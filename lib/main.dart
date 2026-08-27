@@ -149,9 +149,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _showWebView() {
     final url = _controller.text;
     if (url.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('URL is empty')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('URL is empty')));
       return;
     }
 
@@ -165,9 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Could not launch $url')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Could not launch $url')));
     }
   }
 
